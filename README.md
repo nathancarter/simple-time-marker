@@ -6,4 +6,4 @@ extract clips later or create highlight reels.  This tool can be useful.  Open i
 when the video starts, then hit "Mark" at each point in time you wish to remember.  Later, refer to the list
 of times as needed, and hit "Reset" to clear and start over.
 
-[screenshot.png](screenshot)
+![screenshot](screenshot.png)
