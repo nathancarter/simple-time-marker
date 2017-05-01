@@ -1,0 +1,76 @@
+<html>
+    <head>
+        <title>Simple Time Marker</title>
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g=" crossorigin="anonymous"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1><a href='http://github.com/nathancarter/simple-time-marker'>Simple Time
+                        Marker</a></h1>
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center" style="margin-bottom: 1em;">
+                    <div class="btn-group" role="group">
+                        <button type="button" class="btn btn-lg btn-success" id="startButton">Start</button>
+                        <button type="button" class="btn btn-lg btn-primary" id="markButton">Mark</button>
+                    </div>
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 text-center" id="outputDiv">
+                </div>
+            </div>
+        </div>
+        <script>
+            var outputDiv = document.getElementById( 'outputDiv' );
+            function output ( text ) { outputDiv.innerHTML += '<p>' + text + '</p>'; }
+            function clear () { outputDiv.innerHTML = ''; }
+            function lines () { return outputDiv.childNodes.length; }
+            function button ( name ) { return document.getElementById( name + 'Button' ); }
+            function enable ( buttonName, on ) { $( button( buttonName ) ).prop( 'disabled', !on ); }
+            var startTime = null;
+            function start () {
+                startTime = new Date();
+                button( 'start' ).textContent = 'Reset';
+                $( button( 'start' ) ).removeClass( 'btn-success' );
+                $( button( 'start' ) ).addClass( 'btn-danger' );
+                enable( 'mark', true );
+                output( "Started at: " + startTime );
+            }
+            function reset () {
+                startTime = null;
+                button( 'start' ).textContent = 'Start';
+                $( button( 'start' ) ).removeClass( 'btn-danger' );
+                $( button( 'start' ) ).addClass( 'btn-success' );
+                enable( 'mark', false );
+                clear();
+            }
+            reset();
+            $( button( 'start' ) ).on( 'click', function ( event ) {
+                event.preventDefault();
+                if ( !startTime ) start(); else reset();
+            } );
+            $( button( 'mark' ) ).on( 'click', function ( event ) {
+                event.preventDefault();
+                var now = new Date();
+                var elapsed = now - startTime;
+                var sec = ( elapsed / 1000 ) | 0;
+                var min = ( sec / 60 ) | 0;
+                sec = sec % 60;
+                var hrs = ( min / 60 ) | 0;
+                min = min % 60;
+                if ( sec < 10 ) sec = "0" + sec;
+                if ( min < 10 ) min = "0" + min;
+                if ( hrs < 10 ) hrs = "0" + hrs;
+                output( "Mark " + lines() + ": " + hrs + ":" + min + ":" + sec );
+            } );
+        </script>
+    </body>
+</html>
